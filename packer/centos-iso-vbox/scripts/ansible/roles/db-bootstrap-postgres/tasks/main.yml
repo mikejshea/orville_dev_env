@@ -1,0 +1,132 @@
+---
+# Bootstrap Postgres
+
+- name: Install EPEL
+  yum:
+    name: 'epel-release'
+    state: latest
+
+- name: Install Python depends
+  yum:
+    name: 'python-pip'
+    state: latest
+    update_cache: yes
+
+- name: Install python pip
+  pip:
+    name: psycopg2
+
+- name: Create copy of Postgresql pg_hba.conf
+  copy:
+    src: /var/lib/pgsql/10/data/pg_hba.conf
+    dest: /var/lib/pgsql/10/data/pg_hba.conf.orig
+    owner: root
+    group: root
+    mode: 0644
+
+- name: http://docs.ansible.com/ansible/latest/copy_module.html
+  copy:
+    src: pg_hba.conf
+    dest: /var/lib/pgsql/10/data/pg_hba.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Create copy of Postgresql postgresql.conf
+  copy:
+    src: /var/lib/pgsql/10/data/postgresql.conf
+    dest: /var/lib/pgsql/10/data/postgresql.conf.orig
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Postgres config - listen address
+  replace:
+    path: /var/lib/pgsql/10/data/postgresql.conf
+    regexp: "#listen_addresses = 'localhost'"
+    replace: "listen_addresses = '*'"
+    backup: no
+
+- name: Create copy of Kong config
+  copy:
+    src: /etc/kong/kong.conf.default
+    dest: /etc/kong/kong.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Kong config - database
+  replace:
+    path: /etc/kong/kong.conf
+    regexp: '#database = postgres'
+    replace: 'database = postgres'
+    backup: no
+
+- name: Kong config - host
+  replace:
+    path: /etc/kong/kong.conf
+    regexp: '#pg_host = (127\.0\.0\.1)'
+    replace: 'pg_host = \1'
+    backup: no
+
+- name: Kong config - post
+  replace:
+    path: /etc/kong/kong.conf
+    regexp: '#pg_port = (\d*)'
+    replace: 'pg_port = 5432'
+    backup: no
+
+- name: Kong config - user
+  replace:
+    path: /etc/kong/kong.conf
+    regexp: '#pg_user = (kong)'
+    replace: 'pg_user = \1'
+    backup: no
+
+- name: Kong config - password
+  replace:
+    path: /etc/kong/kong.conf
+    regexp: '#pg_password ='
+    replace: 'pg_password = kong'
+    backup: no
+
+- name: Kong config - database name
+  replace:
+    path: /etc/kong/kong.conf
+    regexp: '#pg_database = (kong)'
+    replace: 'pg_database = \1'
+    backup: no
+
+- name: Kong config - ssl
+  replace:
+    path: /etc/kong/kong.conf
+    regexp: '#pg_ssl = (off)'
+    replace: 'pg_ssl = \1'
+    backup: no
+
+- name: Kong config - ssl verify
+  replace:
+    path: /etc/kong/kong.conf
+    regexp: '#pg_ssl_verify = (off)'
+    replace: 'pg_ssl_verify = \1'
+    backup: no
+
+- name: Restart postgresql
+  systemd:
+    name: postgresql-10
+    state: restarted
+    enabled: True
+
+- postgresql_user:
+    name: kong
+    password: kong
+    encrypted: yes
+  become: yes
+  become_user: postgres
+
+# Create a new database with name "acme"
+- postgresql_db:
+    name: kong
+    owner: kong
+  become: yes
+  become_user: postgres

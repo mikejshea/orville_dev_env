@@ -1,0 +1,9 @@
+[all:vars]
+ansible_connection=ssh
+ansible_ssh_user=root
+ansible_ssh_pass=orville
+ansible_become=true
+app_server_port=80
+
+[orville]
+localhost

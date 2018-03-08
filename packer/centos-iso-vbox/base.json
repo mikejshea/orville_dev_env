@@ -1,0 +1,43 @@
+{
+  "variables": {
+    "iso1": "jjj",
+    "checksum": "bba314624956961a2ea31dd460cd860a77911c1e0a56e4820a12b9c5dad363f5",
+    "prim_disk_size1": "20000"
+  },
+  "builders": [
+    {
+      "type": "virtualbox-iso",
+      "boot_command": [
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
+      ],
+      "guest_os_type": "RedHat_64",
+      "boot_wait": "10s",
+      "disk_size": "{{ user `prim_disk_size` }}",
+      "iso_url": "{{ user `iso_path` }}",
+      "iso_checksum": "{{ user `checksum` }}",
+      "iso_checksum_type": "sha256",
+      "vm_name": "{{ user `vm_name` }}",
+      "ssh_username": "root",
+      "ssh_password": "dashboard",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "1800s",
+      "shutdown_command": "shutdown -P now",
+      "output_directory": "{{ user `output_directory` }}",
+      "http_directory": "http",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "{{ user `memory` }}"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "{{ user `cpus` }}"
+        ]
+      ]
+    }
+  ]
+}

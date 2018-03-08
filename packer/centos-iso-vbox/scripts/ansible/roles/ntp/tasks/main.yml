@@ -1,0 +1,18 @@
+---
+# Install and configure ntpd service
+
+- name: Install NTP
+  yum:
+    name: ntpd
+    state: latest
+
+- name: Copy ntpd config
+  template:
+    src: ntp.conf
+    dest: /etc/ntp.conf
+
+- name: Start ntpd service
+  service:
+    name: ntpd
+    state: started
+    enabled: yes

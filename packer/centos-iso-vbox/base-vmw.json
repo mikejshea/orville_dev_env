@@ -1,0 +1,55 @@
+{
+  "variables": {
+    "target_guest_os_type": "centos-64",
+    "target_guest_os_type_vmw": "centos-64",
+    "target_guest_os_type_vb": "RedHat_64"
+  },
+  "builders": [
+    {
+      "type": "vmware-iso",
+      "guest_os_type": "{{ user `target_guest_os_type` }}",
+      "disk_size": "{{ user `prim_disk_size` }}",
+      "disk_type_id": 0,
+      "http_directory": "http",
+      "boot_command": [
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
+      ],
+      "boot_wait": "10s",
+      "iso_url": "{{ user `iso_path` }}",
+      "iso_checksum": "{{ user `checksum` }}",
+      "iso_checksum_type": "sha256",
+      "vm_name": "{{ user `vm_name` }}",
+      "ssh_username": "root",
+      "ssh_password": "orville",
+      "ssh_port": 22,
+      "ssh_wait_timeout": "1800s",
+      "shutdown_command": "shutdown -P now",
+      "output_directory": "{{ user `output_directory` }}",
+      "http_directory": "http",
+      "vmx_data": {
+        "memsize": "2048",
+        "numvcpus": "2",
+        "cpuid.coresPerSocket": "1"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "script": "scripts/ansible_install.sh"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/prep_os.sh"
+    },
+    {
+    "type": "file",
+    "source": "scripts/ansible/",
+    "destination": "/data/ansible/"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/ansible_playbooks.sh"
+    }
+  ]
+}

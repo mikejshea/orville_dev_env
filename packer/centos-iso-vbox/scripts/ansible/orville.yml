@@ -1,0 +1,13 @@
+---
+# main
+# The playbook set up a server to use for testing
+
+- hosts: orville
+  remote_user: root
+  roles:
+    # - role: ntp
+    - role: oracle-java-install
+    - role: nodejs
+    - role: postgres
+    - role: kong
+    - role: db-bootstrap-postgres

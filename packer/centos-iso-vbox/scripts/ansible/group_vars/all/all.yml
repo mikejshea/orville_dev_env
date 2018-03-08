@@ -1,0 +1,72 @@
+---
+# file: group_vars/all
+downloads_path: "/data/downloads"
+
+package_folder: /data/packages/
+
+gpd_package_archive_folder: /data/packages/new-morning-deploy
+gpd_package_deploy_file: new-morning-1.0.3.tgz
+gpd_package_folder: /data/packages/gpd
+gpd_package_name: provider-api
+gpd_package_version: 1.6.1-dev
+
+jmeter_download_url: "http://www.namesdir.com/mirrors/apache//jmeter/binaries/"
+jmeter_download_file: "apache-jmeter-3.2.tgz"
+jmeter_folder: "/data/testing/jmeter"
+jmeter_test_script: "jmeter.jmx"
+jmeter_log_file: "results.txt"
+
+mdb_data_path: "/data/mongodb"
+mdb_conf_cursorTimeoutMillis: 1800000
+mdb_conf_gpd_data: "/data/mongodb/gpd"
+mdb_conf_gpd_log: "/data/mongodb/mdb-gpd.log"
+mdb_conf_port: 27017
+mdb_conf_rpl: "gpd"
+mdb_keyfile: gpd_prod
+mdb_keypath: /data/keys
+mdb_js_path: /data/mdb_js
+
+newman_folder: "/data/testing/newman"
+newman_test_script: "smoke.json"
+HostAndPort: "192.168.162.10"
+clientId: "1234"
+
+nginx_web_listen_port: 80
+nginx_lb_listen_port: 80
+nginx_repo: "http://nginx.org/packages/centos/$releasever/$basearch/"
+
+npm_registry: "https://artifactory.medicity.com/api/npm/npm"
+
+nodejs_path: "/data/nodejs"
+nodejs_version_download: "https://rpm.nodesource.com/setup_8.x"
+
+nrpe_installer: "https://assets.nagios.com/downloads/nagiosxi/agents/linux-nrpe-agent.tar.gz"
+nrpe_download_file: "linux-nrpe-agent.tar.gz"
+nrpe_port: "5666"
+nrpe_user: "nagios"
+nrpe_group: "nagios"
+nrpe_only_from: "10.17.7.80"
+
+oracle_java_8_installer: "http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jre-8u131-linux-x64.rpm"
+oracle_java_8_rpm: "jre-8u131-linux-x64.rpm"
+
+pm2_instances: 2
+pm2_listen_port: 3000
+pm2_script: app.js
+pm2_gpd_script: index.js
+pm2_gpd_name: gpd-api
+
+pm2_dh_api_script: startAPI.js
+pm2_dh_web_script: startWeb.js
+pm2_dh_api_name: dh-api
+pm2_dh_web_name: dh-web
+
+
+rabbitmq_download_path: "/data/nodejs"
+rabbitmq_download_url: "https://github.com/rabbitmq/rabbitmq-server/releases/download/rabbitmq_v3_6_10/rabbitmq-server-3.6.10-1.el7.noarch.rpm"
+rabbitmq_public_key: "https://www.rabbitmq.com/rabbitmq-release-signing-key.asc"
+rabbitmq_rpm_package: "rabbitmq-server-3.6.10-1.el7.noarch.rpm"
+
+starter_app_path: "~/express/ip_app"
+
+xfs_dev: "/dev/sdb"

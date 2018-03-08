@@ -1,0 +1,68 @@
+npm_api_key: "YXJ0aWZhY3RvcnktbnBtOkFLQ3AyV1dpRU1pMVBja1JWQ1RDWXpCQmtoQVpMWVdVRDdFYXlGUUdzZWJtY0VSd1IxbWRhVHQ3QzFuRG1iRXFYSlVhOGN0QmI="
+npm_api_email: sdwire@medicity.com
+
+#mdb_user_admin: gpdAdmin
+#mdb_user_admin_pwd: gpdAdmin
+
+mdb_admin:
+  dh:
+    users:
+      - user_name: dhUserAdmin
+        password: dhUserAdmin
+  gpd:
+    users:
+      - user_name: gpdUserAdmin
+        password: gpdUserAdmin
+
+mdb_users:
+  dh:
+    users:
+    - user_name: apiUser
+      password: apiUser
+      database: admin
+      roles: [{ db: app, role: readWrite }, { db: patient, role: readWrite }, { db: admin, role: readWrite }]
+    - user_name: webUser
+      password: webUser
+      database: admin
+      roles: [{ db: app, role: readWrite }, { db: patient, role: readWrite }, { db: admin, role: readWrite }]
+
+  gpd:
+    users:
+    - user_name: gpdApi
+      password: gpdApi
+      database: admin
+      roles: [{ db: provider-directory, role: readWrite }]
+    - user_name: gpdBatch
+      password: gpdBatch
+      database: admin
+      roles: [{ db: provider-directory, role: readWrite }]
+    - user_name: gpdOdin
+      password: gpdFreya
+      database: admin
+      roles: [{ db: provider-directory, role: dbOwner }, { db: admin, role: dbOwner }]
+
+users_gpd:
+  - name: gpdApi
+    password: gpdApi
+    role: readWrite
+  - name: gpdBatch
+    password: gpdBatch
+    role: readWrite
+  - name: gpdOdin
+    password: gpdFreya
+    role: dbOwner
+
+nm_cfg_script: ./dist/api/index.js
+nm_cfg_name: 'nm-api'
+nm_cfg_mssql_username_indexer: 'NewMorning'
+nm_cfg_mssql_password_indexer: 'Pass$word'
+nm_cfg_mssql_username_api: 'NewMorningApi'
+nm_cfg_mssql_password_api: 'Pass$word'
+nm_cfg_port: 4200
+nm_cfg_url: 'http://den-pd-dev-w1:4200'
+nm_cfg_node_config_dir: '/data/nodejs/new-morning/config'
+nm_cfg_debug: 'app:*'
+nm_cfg_node_env: 'production'
+nm_cfg_bootstrap_username: 'admin'
+nm_cfg_bootstrap_password: 'password1234'
+nm_cfg_secret: 's3cret'

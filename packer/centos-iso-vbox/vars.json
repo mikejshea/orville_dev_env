@@ -1,0 +1,9 @@
+{
+  "iso_path": "D:\\Downloads\\CentOS-7-x86_64-Minimal-1708.iso",
+  "vm_name": "orville-dev1",
+  "output_directory": "d:\\VM_Orville\\",
+  "cpus": "2",
+  "memory": "2048",
+  "prim_disk_size": "20000",
+  "checksum": "bba314624956961a2ea31dd460cd860a77911c1e0a56e4820a12b9c5dad363f5"
+}

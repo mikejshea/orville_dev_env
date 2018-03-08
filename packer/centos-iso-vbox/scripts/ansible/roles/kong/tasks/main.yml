@@ -1,0 +1,19 @@
+---
+# Install Kong
+
+- name: Download Kong
+  get_url:
+    url: "https://bintray.com/kong/kong-community-edition-rpm/download_file?file_path=centos/7/kong-community-edition-0.12.2.el7.noarch.rpm"
+    dest: "{{ downloads_path }}"
+    validate_certs: no
+
+- name: Install Kong
+  yum:
+    name: "{{ downloads_path }}/kong-community-edition-0.12.2.el7.noarch.rpm"
+    disable_gpg_check: yes
+    state: present
+
+- name: Delete Kong download
+  file:
+    name: "{{ downloads_path }}/kong-community-edition-0.12.2.el7.noarch.rpm"
+    state: absent

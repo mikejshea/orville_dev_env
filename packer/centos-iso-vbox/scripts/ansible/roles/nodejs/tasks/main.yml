@@ -1,0 +1,22 @@
+---
+# main set up path and install specific version of nodejs
+
+- name: Create node path
+  file:
+    path: "{{ nodejs_path }}"
+    state: directory
+
+- name: Download nodejs
+  get_url:
+    url: "{{ nodejs_version_download }}"
+    dest: ~/nodejs.sh
+    owner: root
+    mode: 0755
+
+- name: run nodejs bash script
+  shell: ~/nodejs.sh >> ~/nodejs.log
+
+- name: run nodejs install
+  yum:
+    name: nodejs
+    state: latest

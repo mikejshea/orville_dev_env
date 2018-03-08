@@ -1,0 +1,79 @@
+---
+# install RabbitMQ
+
+- name: Create download path
+  file:
+    path: "{{ downloads_path }}/rabbitmq"
+    state: directory
+
+- name: Install erlang
+  yum:
+    name: erlang
+    state: latest
+
+- name: Download rabbitmq
+  get_url:
+    url: "{{ item }}"
+    dest: "{{ downloads_path }}/rabbitmq/"
+    mode: 0440
+  with_items:
+    - "{{ rabbitmq_download_url }}"
+    #- "{{ rabbitmq_public_key }}"
+
+- name: Add rabbitmq key
+  rpm_key:
+    key: "{{ rabbitmq_public_key }}"
+    state: present
+
+- name: install rabbitmw
+  yum:
+    name: "{{ downloads_path }}/rabbitmq/{{ rabbitmq_rpm_package }}"
+    state: present
+
+- name: copy rabbitmq config file
+  copy:
+    src: "rabbitmq.config"
+    dest: "/etc/rabbitmq/rabbitmq.config"
+
+- name: enable rabbitmq management console
+  rabbitmq_plugin:
+    names: rabbitmq_management
+    state: enabled
+
+- name: open admin port
+  firewalld:
+    port: "{{ item }}"
+    permanent: true
+    state: enabled
+  with_items:
+    - "15672/tcp"
+    - "4369/tcp"
+
+- name: restart firewalld
+  service:
+    name: firewalld
+    state: restarted
+    enabled: yes
+
+- name: rabbitmq start on reboot
+  service:
+    name: rabbitmq-server
+    state: started
+    enabled: yes
+
+- name: add admin rabbitmq user
+  rabbitmq_user:
+    user: dhadmin
+    password: dhadmin
+    vhost: /
+    configure_priv: .*
+    read_priv: .*
+    write_priv: .*
+    tags: "administrator"
+    state: present
+
+- name: rabbitmq start on reboot
+  service:
+    name: rabbitmq-server
+    state: started
+    enabled: yes
